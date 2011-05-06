@@ -1,0 +1,46 @@
+= Dynamic Favicon
+
+Static favicon's SUCK if you frequently use a lot of browser tabs for the same webservice/website. Such occurs
+
+* when opening ten tabs of the same webservice
+* for developers browsing the development, staging and live server
+* for webservices with subdomains for each account and you are logged into multiple Accounts at the same time
+
+For me all of the above apply's(in SalesKing) and i am sick of beeing lost in tabs(ation). So i finally hacked a tiny javascript to enable me and our users to customize their favicon's
+
+== Usage
+
+RTFC .. as long as the docs are sparse :-)
+
+Lib is still pretty raw! Example page will follow
+
+=== Basics
+
+The js creates a new header link containing a "blind" favicon. Above this base a customizable canvas image is rendered.
+
+You can configure:
+
+* background png
+* text + color
+* text alignment
+* font
+* image borer radius
+ 
+=== Example
+
+Setup KingTour with some custom options. For detailed options see http://github.com/salesking/king_tour/blob/master/king_tour.js#L141
+    
+  DynFav.txt_color = '#fff';
+  DynFav.txt = 'S';
+  DynFav.txt_x = 3;
+  DynFav.txt_y = 13;
+  DynFav.font = 'bold 13px Arial';
+  DynFav.change();
+
+
+== Size
+
+
+== Credits
+
+
