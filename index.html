@@ -2,8 +2,15 @@
 <html>
 <head>
   <meta charset='utf-8'>
-  
   <title>SalesKing/dynamic-favicon @ GitHub</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>  
+  <script type="text/javascript" src="jscolor/jscolor.js"></script>
+  <script type="text/javascript" src="http://github.com/salesking/dynamic-favicon/raw/master/dynamic_favicon.js"></script> 
+  <!--<script type="text/javascript" src="local.js"></script>    -->
+  <!-- this MUST be present in your header and will be replaced -->
+  <link id="favicon" rel="icon" type="image/png" href="favicon_blank.png">
+  
+  
 
   <style type="text/css">
     body {
@@ -21,6 +28,7 @@
     h1 a { text-decoration: none }
     h2 { font-size: 1.5em; color: #3b3d3f; }
     h3 { text-align: center; color: #3b3d3f; }
+    small{font-size: 0.7em; color: #6E6F70;}
     a { color: #3b3d3f; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
@@ -28,7 +36,38 @@
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
-  <link id="favicon" rel="icon" type="image/png" href="favicon_blank.png">
+  
+  <script type="text/javascript">
+  
+    // initial 
+    DynFav.txt_color = '#fff';
+    DynFav.txt = 'GH';
+    DynFav.txt_x = 1;
+    DynFav.txt_y = 12;
+    DynFav.font = 'bold 10px Arial';
+    DynFav.change();
+    
+    //bind to form
+    $(function(){
+      
+      $("#formSubmit").bind('click', function(e) {
+        e.preventDefault();
+        DynFav.txt = $("#fav_txt").val();
+        DynFav.txt_color = $("#fav_txt_color").val();
+        DynFav.bg_color = $("#fav_bg_color").val();
+        DynFav.txt_x = $("#fav_txt_x").val();
+        DynFav.txt_y = $("#fav_txt_y").val();
+        DynFav.radius = $("#fav_radius").val();
+        DynFav.font = $("#fav_font").val();
+        DynFav.change();
+        return false;
+      });
+    
+    });    
+    
+  </script>
+  
+  
 </head>
 
 <body>
@@ -50,12 +89,52 @@
       Create dynamic favicon's with javascript and canvas
     </div>
 
+    <h2>Test</h2>
+    <form action="/" id="faviconForm" method="get">
+
+      <p>
+        <span>Favicon text</span>
+        <input id="fav_txt" name="txt" type="text" size="3" maxlength="3" value="GH">
+      </p>  
+      <p>  
+        <span>Background color</span>
+        <input id="fav_bg_color" class="color" name="bg_color" type="text">
+        <small>HEX,RGB like known from css</small>
+      </p>  
+      <p>  
+        <span>Text color</span>
+        <input id="fav_txt_color" class="color" name="txt_color" type="text">
+        <small>HEX,RGB like in css</small>
+      </p>  
+      <p>  
+        <span>Border radius</span>
+        <input id="fav_radius" name="radius" type="text" size="2" maxlength="2" value="2">
+      </p>  
+      <p>  
+        <span>X Pos Text</span>
+        <input id="fav_txt_x" name="txt_y" type="text" size="2" maxlength="2" value="1">
+      </p>  
+      <p>  
+        <span>Y Pos Text</span>
+        <input id="fav_txt_y" name="txt_y" type="text" size="2" maxlength="2" value="12">
+      </p>  
+      <p>  
+        <span>Font</span>
+        <input id="fav_font" name="txt" type="text"  value="bold 10px Arial">
+        <small>like known from css</small>
+      </p>  
+      <p>    
+        <input id="formSubmit" name="Submit" type="submit" value="Submit">
+      </p>
+    </form>
+
     <h2>License</h2>
-<p>mit</p>
-<h2>Authors</h2>
-<p>Georg Leciejewski<br/><br/>      </p>
-<h2>Contact</h2>
-<p>SalesKing (info@salesking.eu)<br/>      </p>
+    <p>mit</p>
+
+    <h2>Authors</h2>
+    <p>Georg Leciejewski    <br/>    <br/>      </p>
+    <h2>Contact</h2>
+    <p>SalesKing (info@salesking.eu)    <br/>      </p>
 
 
     <h2>Download</h2>
@@ -75,14 +154,5 @@
 
   </div>
 
-<script type="text/javascript" src="http://github.com/salesking/dynamic-favicon/raw/master/dynamic_favicon.js"></script> 
-<script type="text/javascript">
-  DynFav.txt_color = '#fff';
-  DynFav.txt = 'GH';
-  DynFav.txt_x = 1;
-  DynFav.txt_y = 12;
-  DynFav.font = 'bold 13px Arial';
-  DynFav.change();
-</script>
 </body>
 </html>
