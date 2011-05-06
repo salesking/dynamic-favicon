@@ -10,9 +10,11 @@ For me all of the above apply's(in SalesKing) and i am sick of beeing lost in ta
 
 == Usage
 
+See favicon and js in page source: 
+http://salesking.github.com/dynamic-favicon
+
 RTFC .. as long as the docs are sparse :-)
 
-Lib is still pretty raw! Example page will follow
 
 === Basics
 
@@ -24,7 +26,7 @@ You can configure:
 * text + color
 * text alignment
 * font
-* image borer radius
+* image border radius
  
 === Example
 
@@ -41,6 +43,8 @@ Setup with some custom options:
 == Size
 
 
-== Credits
+== License
+
+MIT 2011 Georg Leciejewski 
 
 
