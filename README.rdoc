@@ -28,7 +28,7 @@ You can configure:
  
 === Example
 
-Setup KingTour with some custom options. For detailed options see http://github.com/salesking/king_tour/blob/master/king_tour.js#L141
+Setup with some custom options:
     
   DynFav.txt_color = '#fff';
   DynFav.txt = 'S';
