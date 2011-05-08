@@ -5,8 +5,8 @@
   <title>SalesKing/dynamic-favicon @ GitHub</title>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>  
   <script type="text/javascript" src="jscolor/jscolor.js"></script>
-  <script type="text/javascript" src="http://github.com/salesking/dynamic-favicon/raw/master/dynamic_favicon.js"></script> 
-  <!--<script type="text/javascript" src="local.js"></script>    -->
+ <script type="text/javascript" src="http://github.com/salesking/dynamic-favicon/raw/master/dynamic_favicon.js"></script> 
+  <!-- <script type="text/javascript" src="local.js"></script>    -->
   <!-- this MUST be present in your header and will be replaced -->
   <link id="favicon" rel="icon" type="image/png" href="favicon_blank.png">
   
@@ -39,27 +39,31 @@
   
   <script type="text/javascript">
   
-    // initial 
-    DynFav.txt_color = '#fff';
-    DynFav.txt = 'GH';
-    DynFav.txt_x = 1;
-    DynFav.txt_y = 12;
-    DynFav.font = 'bold 10px Arial';
-    DynFav.change();
-    
+    // initial
+    DynFav.draw();
     //bind to form
     $(function(){
       
       $("#formSubmit").bind('click', function(e) {
         e.preventDefault();
-        DynFav.txt = $("#fav_txt").val();
-        DynFav.txt_color = $("#fav_txt_color").val();
-        DynFav.bg_color = $("#fav_bg_color").val();
-        DynFav.txt_x = $("#fav_txt_x").val();
-        DynFav.txt_y = $("#fav_txt_y").val();
-        DynFav.radius = $("#fav_radius").val();
-        DynFav.font = $("#fav_font").val();
-        DynFav.change();
+        var opts = {};
+        //collect opts from form fields, by iteration over class option keys
+        for (var prop in DynFav.options() ) {
+          opts[prop] =  $('#fav_'+prop).val();
+        }
+        DynFav.draw(opts);
+        return false;
+      });
+      
+      $(".preset").bind('click', function(e) {
+        e.preventDefault();
+        //dirty dirty .. 
+        var opts = eval("(" + $(this).attr('title') + ')');
+        DynFav.draw(opts);
+        //set form fields
+        for (var prop in opts ) {
+          $('#fav_'+prop).val(opts[prop]);
+        }
         return false;
       });
     
@@ -87,24 +91,34 @@
 
     <div class="description">
       Create dynamic favicon's with javascript and canvas
+      
     </div>
 
-    <h2>Test</h2>
+    <h2>Test it</h2>
+    <p>
+    This is not fully supported by all browsers
+    <ul>
+    <li>Chrome: fully dynamic, use it for tests</li>
+    <li>Safari+Firefox: only works once on page load</li>
+    <li>Opera .. sorry guys</li>
+    <li>IE ... i personally don't care</li>
+    </ul>
+    </p>
     <form action="/" id="faviconForm" method="get">
 
       <p>
         <span>Favicon text</span>
-        <input id="fav_txt" name="txt" type="text" size="3" maxlength="3" value="GH">
+        <input id="fav_text" name="txt" type="text" size="3" maxlength="3" value="G">
       </p>  
       <p>  
         <span>Background color</span>
-        <input id="fav_bg_color" class="color" name="bg_color" type="text">
-        <small>HEX,RGB like known from css</small>
+        <input id="fav_bgColor" class="color" name="bgColor" type="text">
+        <small>HEX,RGB like in CSS</small>
       </p>  
       <p>  
         <span>Text color</span>
-        <input id="fav_txt_color" class="color" name="txt_color" type="text">
-        <small>HEX,RGB like in css</small>
+        <input id="fav_textColor" class="color" name="txt_color" type="text">
+        <small>HEX,RGB like in CSS</small>
       </p>  
       <p>  
         <span>Border radius</span>
@@ -112,30 +126,41 @@
       </p>  
       <p>  
         <span>X Pos Text</span>
-        <input id="fav_txt_x" name="txt_y" type="text" size="2" maxlength="2" value="1">
+        <input id="fav_textX" name="textX" type="text" size="2" maxlength="2" value="1">
       </p>  
       <p>  
         <span>Y Pos Text</span>
-        <input id="fav_txt_y" name="txt_y" type="text" size="2" maxlength="2" value="12">
+        <input id="fav_textY" name="textY" type="text" size="2" maxlength="2" value="12">
       </p>  
       <p>  
         <span>Font</span>
-        <input id="fav_font" name="txt" type="text"  value="bold 10px Arial">
-        <small>like known from css</small>
+        <input id="fav_font" name="font" type="text" value="bold 10px Arial">
+        <small>like in CSS</small>
       </p>  
       <p>    
         <input id="formSubmit" name="Submit" type="submit" value="Submit">
       </p>
     </form>
-
+    
+    Some more examples, click to see:
+    <ul>
+    <li>
+      <a class="preset" href="#" title='{bgColor: "D41326", font: "bold 16px Arial", radius: "3",text: "♥",textColor: "F2E9EC",textX: "3",textY: "14"}'>A Lovely Heart</a>
+    </li>
+    <li>
+      <a class="preset" href="#" title='{bgColor: "000", font: "bold 18px Arial", radius: "6",text: "♠",textColor: "fff",textX: "3",textY: "13"}'>Ace of Spades</a>
+    </li>
+    <li>
+      <a class="preset" href="#" title='{bgColor: "EBEBEB", font: "bold 13px Arial",text: "$$",textColor: "146B07",textX: "1",textY: "14"}'>Dollars</a>
+    </li>
+    </ul>
+    
     <h2>License</h2>
-    <p>mit</p>
+    <p>MIT</p>
 
-    <h2>Authors</h2>
-    <p>Georg Leciejewski    <br/>    <br/>      </p>
     <h2>Contact</h2>
-    <p>SalesKing (info@salesking.eu)    <br/>      </p>
-
+    <p>SalesKing Georg Leciejewski (info@salesking.eu)    <br/>      </p>
+    
 
     <h2>Download</h2>
     <p>
