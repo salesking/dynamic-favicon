@@ -4,27 +4,42 @@
  * Copyright (c) 2011 Georg Leciejewski
  * licensed under the MIT license:
  * http://www.opensource.org/licenses/mit-license.php
- *
+ * 
+ * Creates a canvas image and maps it to a favicon link in the header section.
+ * This is not fully supported by all browsers 
+ * - Chrome: fully dynamic
+ * - Safari+Firefox: only works once on page load
+ * - Opera .. sorry guys
+ * - IE ... i personally dont care
  */
+
 
 DynFav = (function() {
-
-  var _private = {};
-  
+  // Default options
+  var _defaults = {
+    textColor : '#000',    // color of the text on the icon  #5025f0
+    text      : 'SK',      // text  on the icon
+    textX     : 1,         // x pos from right
+    textY     : 12,        // y pos from top, txt baselin
+    radius    : 3,         //border radius
+    font      : 'bold 10px "helvetica", sans-serif',
+    bgColor   : '#D82C00',
+    bgImg     : 'favicon_blank.png', //png file used as img src, background behind the canvas, could contain a logo or so
+  };
 
   /**
- * Draws a rounded rectangle using the current state of the canvas.
- * If you omit the last three params, it will draw a rectangle
- * outline with a 5 pixel border radius
- * @param {CanvasRenderingContext2D} ctx
- * @param {Number} x The top left x coordinate
- * @param {Number} y The top left y coordinate
- * @param {Number} width The width of the rectangle
- * @param {Number} height The height of the rectangle
- * @param {Number} radius The corner radius. Defaults to 5;
- * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
- * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to false.
- */
+  * Draws a rounded rectangle using the current state of the canvas.
+  * If you omit the last three params, it will draw a rectangle
+  * outline with a 5 pixel border radius
+  * @param {CanvasRenderingContext2D} ctx
+  * @param {Number} x The top left x coordinate
+  * @param {Number} y The top left y coordinate
+  * @param {Number} width The width of the rectangle
+  * @param {Number} height The height of the rectangle
+  * @param {Number} radius The corner radius. Defaults to 5;
+  * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
+  * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to false.
+  */
   function _roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 
     if (typeof radius === "undefined") {  radius = 5  }
@@ -52,48 +67,60 @@ DynFav = (function() {
   /* PUBLIC Interface*/
   return {
 
-    // Options - set these right before the call to DynamicFavicon.open()
-    txt_color : '#000' ,   // color of the text on the icon  '#5025f0'
-    txt       : 'SK',  // text  on the icon
-    txt_x     : 1,  // text  on the icon
-    txt_y     : 12,  // text  on the icon
-    radius    : 3,  //border radius
-    font      : 'bold 10px "helvetica", sans-serif',
-    bg_color  : '#D82C00',
-    bg_png    : 'favicon_blank.png', //png file used as img src, background behind the canvas
-
-     /* change the icon
-     * @example DynamicFavicon.change()
-     * Note that a HEAD tag needs to be existent in the current document
+     /* draw the icon
+     * @example DynamicFavicon.draw()
+     * Note that a link header-tag with id=favicon needs to be existent in the current document
      */
-    change: function() {
+    draw: function(options) {
       var canvas = document.createElement('canvas'),
           ctx,
           img = document.createElement('img'),
-          link = document.getElementById('favicon').cloneNode(true);
+          link = document.getElementById('favicon').cloneNode(true),
+          opts =_defaults;
 
-//      console.dir(canvas);
-
-        if (canvas.getContext) {
-          canvas.height = canvas.width = 16; // set the size
-          ctx = canvas.getContext('2d');
-          img.onload = function () { // once the image has loaded
-            ctx.drawImage(this, 0, 0);
-            //bg
-            ctx.fillStyle = DynFav.bg_color;
-            _roundRect(ctx, 0, 0, 16, 16, DynFav.radius, true);
-            //fonts
-            ctx.font = DynFav.font;
-            ctx.fillStyle = DynFav.txt_color;
-            ctx.fillText(DynFav.txt, DynFav.txt_x, DynFav.txt_y);
-
-            link.href = canvas.toDataURL('image/png');
-            document.body.appendChild(link);
-          };
-          img.src = DynFav.bg_png;
+      // merge given options with defaults
+      if(typeof options != 'undefined'){
+        for(var prop in options) {
+          if(opts.hasOwnProperty(prop) && typeof options[prop] !='undefined')
+              opts[prop] = options[prop];
         }
+      }
 
+      if (canvas.getContext) {
+        canvas.height = canvas.width = 16; // set the size
+        ctx = canvas.getContext('2d');
+        img.onload = function () { // once the image has loaded
+          ctx.drawImage(this, 0, 0);
+          //bg
+          ctx.fillStyle = opts.bgColor;
+          _roundRect(ctx, 0, 0, 16, 16, opts.radius, true);
+          //fonts
+          ctx.font = opts.font;
+          ctx.fillStyle = opts.textColor;
+          ctx.fillText(opts.text, opts.textX, opts.textY);
+
+          link.href = canvas.toDataURL('image/png');
+          document.body.appendChild(link);
+        };
+        img.src = opts.bgImg;
+      }
+
+    },
+    
+    /**
+     * Get or Set default options
+     * @param new_opts hash with to be overriden default options
+     */
+    options: function(new_opts){
+      if(typeof new_opts == 'undefined') return _defaults;
+      for(var prop in new_opts) {
+        if(_defaults.hasOwnProperty(prop) && typeof new_opts[prop] !='undefined')
+            _defaults[prop] = new_opts[prop];
+      }
+      return _defaults;
     }
+    
+    
 
   }
 })();
